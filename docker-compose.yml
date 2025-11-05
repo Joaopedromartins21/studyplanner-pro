@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: studyplanner-db
+    environment:
+      POSTGRES_DB: studyplanner
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - studyplanner-network
+
+  backend:
+    build: .
+    container_name: studyplanner-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/studyplanner
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - studyplanner-network
+    volumes:
+      - ./uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: studyplanner-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - studyplanner-network
+
+volumes:
+  postgres_data:
+
+networks:
+  studyplanner-network:
+    driver: bridge

@@ -37,7 +37,130 @@ O projeto foi construído utilizando tecnologias modernas e robustas, tanto no b
 |             | Axios               | Cliente HTTP para realizar requisições à API do back-end.                 |
 |             | Context API         | Gerenciamento de estado global para autenticação e outros dados.          |
 
-## Como Executar o Projeto
+## 🚀 Como Executar o Projeto
+
+### Opção 1: Execução Local (Desenvolvimento)
+
+Para executar o projeto em seu ambiente local, siga os passos abaixo.
+
+### Pré-requisitos
+
+- **Java 17+**
+- **Maven 3.8+**
+- **Node.js 18+** e **npm**
+- **PostgreSQL**
+
+### 1. Configuração do Back-end
+
+Clone o repositório e navegue até a pasta do projeto:
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd studyplanner-pro
+```
+
+Crie um banco de dados no PostgreSQL chamado `studyplanner`.
+
+Configure as credenciais do banco de dados e outras configurações no arquivo `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/studyplanner
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+
+# Chave secreta para JWT (gere uma chave segura)
+jwt.secret=SUA_CHAVE_SECRETA_AQUI
+
+# Credenciais do Google para a integração com o Calendar
+spring.security.oauth2.client.registration.google.client-id=SEU_CLIENT_ID_DO_GOOGLE
+spring.security.oauth2.client.registration.google.client-secret=SEU_CLIENT_SECRET_DO_GOOGLE
+```
+
+Execute o back-end:
+
+```bash
+mvn spring-boot:run
+```
+
+A API estará disponível em `http://localhost:8080`.
+
+### 2. Configuração do Front-end
+
+Navegue até o diretório do front-end:
+
+```bash
+cd frontend
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Crie um arquivo `.env` na raiz do diretório `frontend` e configure a URL da API:
+
+```
+VITE_API_URL=http://localhost:8080/api
+```
+
+Execute o front-end:
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em `http://localhost:5173`.
+
+### Opção 2: Execução com Docker (Produção)
+
+Para executar o projeto com Docker e Docker Compose, certifique-se de ter ambos instalados.
+
+Na raiz do projeto, execute:
+
+```bash
+docker-compose up --build
+```
+
+O sistema completo estará disponível em `http://localhost:5173`.
+
+- O back-end estará em `http://localhost:8080`
+- O banco de dados estará em `http://localhost:5432`
+
+Para parar os containers, pressione `Ctrl + C` e execute:
+
+```bash
+docker-compose down
+```
+
+## 📄 Documentação da API (Swagger)
+
+Com o back-end em execução, a documentação interativa da API estará disponível em:
+
+**http://localhost:8080/swagger-ui.html**
+
+Lá você pode visualizar todos os endpoints, modelos de dados e testar a API diretamente.
+
+## ✅ Testes
+
+O projeto inclui testes unitários para a camada de serviço do back-end. Para executá-los:
+
+```bash
+mvn test
+```
+
+## ⚡ Otimizações de Performance
+
+- **Cache:** Implementado com Caffeine para endpoints de leitura frequente (matérias, tarefas, conquistas).
+- **Paginação:** Adicionada aos endpoints de listagem para evitar sobrecarga.
+- **Índices:** Adicionados às entidades para otimizar consultas ao banco de dados.
+
+## 📦 Deploy
+
+O projeto está configurado para deploy em produção utilizando Docker. O `docker-compose.yml` orquestra os serviços de back-end, front-end e banco de dados.
+
+O arquivo `application-prod.properties` permite configurar o ambiente de produção através de variáveis de ambiente, garantindo a segurança das credenciais.
+
 
 Para executar o projeto em seu ambiente local, siga os passos abaixo.
 
